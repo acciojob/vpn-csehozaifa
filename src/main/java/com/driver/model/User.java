@@ -12,18 +12,22 @@ public class User {
     private String username;
     private String password;
     private String originalIp;
-    private Boolean connected;
     private String maskedIp;
+    private Boolean connected;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Connection> connectionList;
 
-    @JoinColumn
     @ManyToMany
+    @JoinColumn
     private List<ServiceProvider> serviceProviderList;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Country originalCountry; //This field remains unaffected even when vpn connection is made
+    private Country originalCountry;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Connection> connectionList;
+
+    public User() {
+    }
+
 
     public int getId() {
         return id;
@@ -57,6 +61,14 @@ public class User {
         this.originalIp = originalIp;
     }
 
+    public String getMaskedIp() {
+        return maskedIp;
+    }
+
+    public void setMaskedIp(String maskedIp) {
+        this.maskedIp = maskedIp;
+    }
+
     public Boolean getConnected() {
         return connected;
     }
@@ -65,12 +77,12 @@ public class User {
         this.connected = connected;
     }
 
-    public String getMaskedIp() {
-        return maskedIp;
+    public List<Connection> getConnectionList() {
+        return connectionList;
     }
 
-    public void setMaskedIp(String maskedIp) {
-        this.maskedIp = maskedIp;
+    public void setConnectionList(List<Connection> connectionList) {
+        this.connectionList = connectionList;
     }
 
     public List<ServiceProvider> getServiceProviderList() {
@@ -87,13 +99,5 @@ public class User {
 
     public void setOriginalCountry(Country originalCountry) {
         this.originalCountry = originalCountry;
-    }
-
-    public List<Connection> getConnectionList() {
-        return connectionList;
-    }
-
-    public void setConnectionList(List<Connection> connectionList) {
-        this.connectionList = connectionList;
     }
 }
